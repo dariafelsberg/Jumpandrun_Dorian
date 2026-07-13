@@ -1,0 +1,237 @@
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: #03040a;
+    font-family: "Orbitron", sans-serif;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+a { color: #00eaff; }
+
+/* ---------- Game ---------- */
+
+#game-container {
+    width: 900px;
+    height: 600px;
+    background: radial-gradient(circle at center, #0a0f2b, #03040a);
+    border-radius: 12px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+    position: relative;
+    overflow: hidden;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+}
+
+#ui {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    font-size: 16px;
+}
+
+.panel {
+    background: rgba(0,0,0,0.4);
+    padding: 8px 12px;
+    border-radius: 8px;
+    backdrop-filter: blur(4px);
+}
+
+#center-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+#center-overlay h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.btn {
+    margin-top: 20px;
+    padding: 12px 28px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #00eaff, #0077ff);
+    color: #000;
+    box-shadow: 0 0 20px rgba(0,170,255,0.7);
+    transition: 0.15s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.2);
+}
+
+.btn.secondary {
+    background: linear-gradient(135deg, #333, #111);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(0,0,0,0.6);
+}
+
+/* ---------- Top bar (nav on game/highscore pages) ---------- */
+
+#topbar {
+    width: 900px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+#topbar .links a {
+    margin-left: 16px;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+/* ---------- Auth pages (Login / Registrierung) ---------- */
+
+.auth-card {
+    width: 380px;
+    background: radial-gradient(circle at center, #0a0f2b, #03040a);
+    border-radius: 12px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+    padding: 32px 30px;
+}
+
+.auth-card h1 {
+    font-size: 26px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 0;
+    text-align: center;
+}
+
+.field {
+    margin-bottom: 16px;
+}
+
+.field label {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: #9fd8ff;
+}
+
+.field input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #1b2550;
+    background: #060a1e;
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.field input:focus {
+    outline: none;
+    border-color: #00eaff;
+}
+
+.auth-card .btn {
+    width: 100%;
+    text-align: center;
+    margin-top: 6px;
+}
+
+.auth-switch {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 13px;
+    color: #9fd8ff;
+}
+
+.error-box {
+    background: rgba(255,0,90,0.15);
+    border: 1px solid rgba(255,0,90,0.5);
+    color: #ff5f9e;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+.success-box {
+    background: rgba(0,255,170,0.1);
+    border: 1px solid rgba(0,255,170,0.5);
+    color: #6affc9;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+/* ---------- Highscore page ---------- */
+
+#highscore-card {
+    width: 700px;
+    background: radial-gradient(circle at center, #0a0f2b, #03040a);
+    border-radius: 12px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+    padding: 30px;
+}
+
+#highscore-card h1 {
+    text-align: center;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 0;
+}
+
+table.scores {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+table.scores th, table.scores td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #1b2550;
+}
+
+table.scores th {
+    color: #9fd8ff;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+table.scores tr.me {
+    background: rgba(0,234,255,0.08);
+}
+
+table.scores td.rank {
+    color: #00eaff;
+    font-weight: 700;
+    width: 40px;
+}

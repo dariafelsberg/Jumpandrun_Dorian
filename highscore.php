@@ -1,0 +1,63 @@
+<?php
+require_once __DIR__ . '/config.php';
+requireLogin();
+
+// Bester Score pro Nutzer, absteigend sortiert
+$stmt = $pdo->query("
+    SELECT u.username, MAX(s.score) AS best_score, MAX(s.wave) AS best_wave
+    FROM scores s
+    JOIN users u ON u.id = s.user_id
+    GROUP BY s.user_id
+    ORDER BY best_score DESC
+    LIMIT 20
+");
+$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Highscore – Galaxy Runner</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="topbar" style="width:700px;">
+    <div>Eingeloggt als <strong><?= htmlspecialchars($_SESSION['username']) ?></strong></div>
+    <div class="links">
+        <a href="index.php">Zurück zum Spiel</a>
+        <a href="logout.php">Logout</a>
+    </div>
+</div>
+
+<div id="highscore-card">
+    <h1>🏆 Highscore</h1>
+
+    <?php if (empty($rows)): ?>
+        <p style="text-align:center;color:#9fd8ff;">Noch keine Einträge vorhanden. Spiel eine Runde!</p>
+    <?php else: ?>
+        <table class="scores">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Spieler</th>
+                    <th>Score</th>
+                    <th>Welle</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($rows as $i => $row): ?>
+                    <tr class="<?= $row['username'] === $_SESSION['username'] ? 'me' : '' ?>">
+                        <td class="rank"><?= $i + 1 ?></td>
+                        <td><?= htmlspecialchars($row['username']) ?></td>
+                        <td><?= (int)$row['best_score'] ?></td>
+                        <td><?= (int)$row['best_wave'] ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+</div>
+
+</body>
+</html>
