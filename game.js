@@ -273,16 +273,14 @@ function gameOver() {
         <h1>Game Over</h1>
         <p>Score: ${score} · Welle: ${wave}</p>
         <p id="save-status" style="font-size:13px;color:#9fd8ff;">Speichere Highscore...</p>
-        <button class="btn" id="restart-btn">Restart</button>
         <a class="btn secondary" href="highscore.php">Highscore ansehen</a>
     `;
-    document.getElementById("restart-btn").onclick = startGame;
 
     submitScore(score, wave).then(result => {
         const status = document.getElementById("save-status");
         if (!status) return;
         status.textContent = result.success
-            ? "Highscore gespeichert!"
+            ? "Highscore gespeichert! Du hattest nur einen Versuch."
             : "Highscore konnte nicht gespeichert werden.";
     });
 }
@@ -292,9 +290,6 @@ document.getElementById("start-btn").onclick = startGame;
 window.addEventListener("keydown", (e) => {
     keys[e.key.toLowerCase()] = true;
     if (e.key === "p") paused = !paused;
-    if (e.key === "r") {
-        startGame();
-    }
 });
 window.addEventListener("keyup", (e) => keys[e.key.toLowerCase()] = false);
 
