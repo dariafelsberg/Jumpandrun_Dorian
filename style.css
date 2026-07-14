@@ -192,6 +192,18 @@ canvas {
 
 /* ---------- Highscore page ---------- */
 
+#user-header {
+    width: 700px;
+    box-sizing: border-box;
+    margin: 0 auto 16px;
+    padding: 14px 24px;
+    background: radial-gradient(circle at center, #0a0f2b, #03040a);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    font-size: 14px;
+    text-align: center;
+}
+
 #highscore-card {
     width: 700px;
     background: radial-gradient(circle at center, #0a0f2b, #03040a);
@@ -211,6 +223,18 @@ table.scores {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
+}
+
+.table-scroll {
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.table-scroll thead th {
+    position: sticky;
+    top: 0;
+    background: #0a0f2b;
+    z-index: 1;
 }
 
 table.scores th, table.scores td {

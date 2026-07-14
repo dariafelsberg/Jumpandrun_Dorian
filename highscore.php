@@ -27,11 +27,8 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
 
-<div id="topbar" style="width:700px;">
-    <div>Eingeloggt als <strong><?= htmlspecialchars($_SESSION['username']) ?></strong></div>
-    <div class="links">
-        <a href="logout.php">Logout</a>
-    </div>
+<div id="user-header">
+    Eingeloggt als <strong><?= htmlspecialchars($_SESSION['username']) ?></strong>
 </div>
 
 <div id="highscore-card">
@@ -40,6 +37,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php if (empty($rows)): ?>
         <p style="text-align:center;color:#9fd8ff;">Noch keine Einträge vorhanden. Spiel eine Runde!</p>
     <?php else: ?>
+        <div class="table-scroll">
         <table class="scores">
             <thead>
                 <tr>
@@ -60,6 +58,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php endforeach; ?>
             </tbody>
         </table>
+        </div>
     <?php endif; ?>
 
     <div style="text-align:center;">
