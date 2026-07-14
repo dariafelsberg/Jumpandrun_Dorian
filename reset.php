@@ -2,7 +2,7 @@
 require_once __DIR__ . '/config.php';
 
 // ⚠️ Bitte diesen Schlüssel ändern, bevor du live gehst!
-define('sbw-nm-weinfelden', 'galaxy-admin-2026');
+define('RESET_KEY', 'galaxy-admin-2026');
 
 $key = $_GET['key'] ?? $_POST['key'] ?? '';
 
