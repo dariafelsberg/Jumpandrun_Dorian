@@ -63,7 +63,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php endif; ?>
 
     <div style="text-align:center;">
-        <a class="btn" href="index.php">Zurück zum Spiel</a>
+        <a class="btn" href="logout.php">Zurück zum Spiel</a>
     </div>
 </div>
 
