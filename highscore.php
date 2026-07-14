@@ -2,12 +2,17 @@
 require_once __DIR__ . '/config.php';
 requireLogin();
 
-// Bester Score pro Nutzer, absteigend sortiert
+// Bester Score pro Nutzer, absteigend sortiert (Score UND Welle stammen aus demselben Run)
 $stmt = $pdo->query("
-    SELECT u.username, MAX(s.score) AS best_score, MAX(s.wave) AS best_wave
+    SELECT u.vorname, u.nachname, s.score AS best_score, s.wave AS best_wave
     FROM scores s
     JOIN users u ON u.id = s.user_id
-    GROUP BY s.user_id
+    WHERE s.id IN (
+        SELECT s2.id FROM scores s2
+        WHERE s2.user_id = s.user_id
+        ORDER BY s2.score DESC, s2.id ASC
+        LIMIT 1
+    )
     ORDER BY best_score DESC
     LIMIT 20
 ");
@@ -47,9 +52,9 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </thead>
             <tbody>
                 <?php foreach ($rows as $i => $row): ?>
-                    <tr class="<?= $row['username'] === $_SESSION['username'] ? 'me' : '' ?>">
+                    <tr class="<?= ($row['vorname'] . ' ' . $row['nachname']) === $_SESSION['username'] ? 'me' : '' ?>">
                         <td class="rank"><?= $i + 1 ?></td>
-                        <td><?= htmlspecialchars($row['username']) ?></td>
+                        <td><?= htmlspecialchars($row['vorname'] . ' ' . $row['nachname']) ?></td>
                         <td><?= (int)$row['best_score'] ?></td>
                         <td><?= (int)$row['best_wave'] ?></td>
                     </tr>
