@@ -14,8 +14,8 @@ try {
     $pdo->exec("CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         email TEXT NOT NULL UNIQUE,
-        username TEXT NOT NULL,
-        password_hash TEXT NOT NULL,
+        vorname TEXT NOT NULL,
+        nachname TEXT NOT NULL,
         created_at TEXT DEFAULT CURRENT_TIMESTAMP
     )");
 
@@ -40,7 +40,7 @@ function isLoggedIn(): bool {
 // Hilfsfunktion: zwingt Login, sonst Redirect
 function requireLogin(): void {
     if (!isLoggedIn()) {
-        header('Location: login.php');
+        header('Location: signin.php');
         exit;
     }
 }
