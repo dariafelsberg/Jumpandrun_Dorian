@@ -9,6 +9,7 @@ let mouse = { x: canvas.width/2, y: canvas.height/2, down: false };
 
 let player, enemies, bullets, particles, powerups;
 let score, hp, wave, running, paused;
+let rafId = null;
 
 class Player {
     constructor() {
@@ -234,7 +235,19 @@ function update() {
         spawnWave();
     }
 
-    requestAnimationFrame(update);
+    rafId = requestAnimationFrame(update);
+}
+
+// Startet (oder neu-startet) das Spiel und stellt sicher, dass
+// niemals zwei update()-Loops gleichzeitig laufen
+function startGame() {
+    if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+    }
+    resetGame();
+    spawnWave();
+    update();
 }
 
 // Sendet das Ergebnis ans Backend, sobald die Runde vorbei ist
@@ -263,11 +276,7 @@ function gameOver() {
         <button class="btn" id="restart-btn">Restart</button>
         <a class="btn secondary" href="highscore.php">Highscore ansehen</a>
     `;
-    document.getElementById("restart-btn").onclick = () => {
-        resetGame();
-        spawnWave();
-        update();
-    };
+    document.getElementById("restart-btn").onclick = startGame;
 
     submitScore(score, wave).then(result => {
         const status = document.getElementById("save-status");
@@ -278,19 +287,13 @@ function gameOver() {
     });
 }
 
-document.getElementById("start-btn").onclick = () => {
-    resetGame();
-    spawnWave();
-    update();
-};
+document.getElementById("start-btn").onclick = startGame;
 
 window.addEventListener("keydown", (e) => {
     keys[e.key.toLowerCase()] = true;
     if (e.key === "p") paused = !paused;
     if (e.key === "r") {
-        resetGame();
-        spawnWave();
-        update();
+        startGame();
     }
 });
 window.addEventListener("keyup", (e) => keys[e.key.toLowerCase()] = false);
