@@ -3,7 +3,14 @@ require_once __DIR__ . '/config.php';
 
 $key = $_GET['key'] ?? '';
 
-$users  = $pdo->query('SELECT id, email, vorname, nachname, created_at FROM users ORDER BY id DESC')->fetchAll(PDO::FETCH_ASSOC);
+$users  = $pdo->query('
+    SELECT u.id, u.email, u.vorname, u.nachname, u.created_at,
+           MAX(s.score) AS best_score
+    FROM users u
+    LEFT JOIN scores s ON s.user_id = u.id
+    GROUP BY u.id
+    ORDER BY (best_score IS NULL) ASC, best_score DESC
+')->fetchAll(PDO::FETCH_ASSOC);
 $scores = $pdo->query('
     SELECT s.id, s.user_id, u.vorname, u.nachname, s.score, s.wave, s.created_at
     FROM scores s
@@ -47,15 +54,17 @@ $scores = $pdo->query('
         <h2>Users (<?= count($users) ?>)</h2>
         <table class="db">
             <thead>
-                <tr><th>ID</th><th>Email</th><th>Vorname</th><th>Nachname</th><th>Erstellt am</th></tr>
+                <tr><th>#</th><th>ID</th><th>Email</th><th>Vorname</th><th>Nachname</th><th>Bester Score</th><th>Erstellt am</th></tr>
             </thead>
             <tbody>
-                <?php foreach ($users as $u): ?>
+                <?php foreach ($users as $i => $u): ?>
                 <tr>
+                    <td><?= $i + 1 ?></td>
                     <td><?= (int)$u['id'] ?></td>
                     <td><?= htmlspecialchars($u['email']) ?></td>
                     <td><?= htmlspecialchars($u['vorname']) ?></td>
                     <td><?= htmlspecialchars($u['nachname']) ?></td>
+                    <td><?= $u['best_score'] !== null ? (int)$u['best_score'] : '–' ?></td>
                     <td><?= htmlspecialchars($u['created_at']) ?></td>
                 </tr>
                 <?php endforeach; ?>
