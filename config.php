@@ -10,6 +10,19 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->exec('PRAGMA foreign_keys = ON');
 
+    // Prüfen, ob eine "users"-Tabelle mit dem ALTEN Schema existiert
+    // (aus einer früheren Version mit username/password_hash statt vorname/nachname).
+    // Falls ja: alte Tabellen entfernen, damit sie unten sauber neu angelegt werden.
+    $existingCols = [];
+    $tableCheck = $pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND name='users'")->fetch();
+    if ($tableCheck) {
+        $existingCols = array_column($pdo->query("PRAGMA table_info(users)")->fetchAll(PDO::FETCH_ASSOC), 'name');
+    }
+    if ($tableCheck && !in_array('vorname', $existingCols, true)) {
+        $pdo->exec('DROP TABLE IF EXISTS scores');
+        $pdo->exec('DROP TABLE IF EXISTS users');
+    }
+
     // Tabellen anlegen, falls sie noch nicht existieren
     $pdo->exec("CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
