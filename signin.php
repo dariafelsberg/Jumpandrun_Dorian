@@ -19,14 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Bitte eine gültige Email-Adresse eingeben.';
     } else {
         // Prüfen, ob diese Email bereits ein Konto hat
-        $stmt = $pdo->prepare('SELECT id, vorname, nachname FROM users WHERE email = ?');
+        $stmt = $pdo->prepare('SELECT id FROM users WHERE email = ?');
         $stmt->execute([$email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user) {
-            // Bekannte Email -> direkt einloggen
-            $_SESSION['user_id']  = $user['id'];
-            $_SESSION['username'] = $user['vorname'] . ' ' . $user['nachname'];
+        if ($stmt->fetch()) {
+            $error = 'Diese Email-Adresse wurde bereits verwendet.';
         } else {
             // Neue Email -> Konto automatisch anlegen und einloggen
             try {
@@ -36,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['username'] = $vorname . ' ' . $nachname;
             } catch (PDOException $e) {
                 // Falls die UNIQUE-Regel auf DB-Ebene greift (Race Condition)
-                $error = 'Diese Email wird bereits verwendet. Bitte erneut versuchen.';
+                $error = 'Diese Email-Adresse wurde bereits verwendet.';
             }
         }
 
