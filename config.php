@@ -1,5 +1,15 @@
 <?php
 // config.php – Datenbankverbindung (SQLite) + Session
+
+// Sessions im eigenen, garantiert beschreibbaren Ordner speichern
+// (verhindert Session-Verlust auf Shared-Hosting mit restriktivem System-Sessionpfad)
+$sessionDir = __DIR__ . '/data/sessions';
+if (!is_dir($sessionDir)) {
+    @mkdir($sessionDir, 0775, true);
+}
+if (is_dir($sessionDir) && is_writable($sessionDir)) {
+    session_save_path($sessionDir);
+}
 session_start();
 
 $dbFile = __DIR__ . '/data/game.sqlite';
