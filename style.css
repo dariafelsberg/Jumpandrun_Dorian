@@ -201,7 +201,7 @@ canvas {
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0,0,0,0.6);
     font-size: 14px;
-    text-align: left;
+    text-align: center;
 }
 
 #highscore-card {
@@ -228,6 +228,26 @@ table.scores {
 .table-scroll {
     max-height: 420px;
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #00eaff #0a0f2b;
+}
+
+.table-scroll::-webkit-scrollbar {
+    width: 10px;
+}
+
+.table-scroll::-webkit-scrollbar-track {
+    background: #0a0f2b;
+    border-radius: 10px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00eaff, #0077ff);
+    border-radius: 10px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb:hover {
+    background: #00eaff;
 }
 
 .table-scroll thead th {
