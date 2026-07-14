@@ -30,7 +30,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <div id="topbar" style="width:700px;">
     <div>Eingeloggt als <strong><?= htmlspecialchars($_SESSION['username']) ?></strong></div>
     <div class="links">
-        <a href="index.php">Zurück zum Spiel</a>
+        <a class="btn" href="index.php">Zurück zum Spiel</a>
         <a href="logout.php">Logout</a>
     </div>
 </div>
