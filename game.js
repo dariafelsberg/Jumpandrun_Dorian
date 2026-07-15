@@ -69,33 +69,8 @@ class Enemy {
         const dx = player.x - this.x;
         const dy = player.y - this.y;
         const dist = Math.hypot(dx, dy) || 1;
-        let moveX = dx/dist;
-        let moveY = dy/dist;
-
-        // Abstoßung von anderen Gegnern, damit sie sich nicht auf einem Punkt stapeln
-        let sepX = 0, sepY = 0;
-        const minDist = this.radius * 2.2;
-        enemies.forEach(other => {
-            if (other === this) return;
-            const ox = this.x - other.x;
-            const oy = this.y - other.y;
-            const oDist = Math.hypot(ox, oy) || 0.01;
-            if (oDist < minDist) {
-                const push = (minDist - oDist) / minDist;
-                sepX += (ox/oDist) * push;
-                sepY += (oy/oDist) * push;
-            }
-        });
-
-        // Verfolgung + Abstoßung kombinieren (Abstoßung stärker gewichten)
-        let combinedX = moveX + sepX * 1.8;
-        let combinedY = moveY + sepY * 1.8;
-        const combinedLen = Math.hypot(combinedX, combinedY) || 1;
-        combinedX /= combinedLen;
-        combinedY /= combinedLen;
-
-        this.x += combinedX * this.speed;
-        this.y += combinedY * this.speed;
+        this.x += dx/dist * this.speed;
+        this.y += dy/dist * this.speed;
     }
     draw() {
         ctx.save();
@@ -189,6 +164,44 @@ function spawnWave() {
     }
 }
 
+// Verhindert, dass Gegner sich gegenseitig durchdringen bzw. aufeinander stapeln,
+// indem sich überlappende Gegner nach jedem Update auseinander schieben.
+function resolveEnemyCollisions() {
+    for (let pass = 0; pass < 3; pass++) {
+        for (let i = 0; i < enemies.length; i++) {
+            for (let j = i + 1; j < enemies.length; j++) {
+                const a = enemies[i], b = enemies[j];
+                const dx = b.x - a.x, dy = b.y - a.y;
+                let dist = Math.hypot(dx, dy);
+                const minDist = a.radius + b.radius;
+                if (dist < minDist) {
+                    if (dist < 0.01) {
+                        // exakt gleiche Position -> zufällige Richtung erzwingen
+                        dist = 0.01;
+                    }
+                    const overlap = (minDist - dist) / 2;
+                    const nx = dx / dist, ny = dy / dist;
+                    a.x -= nx * overlap;
+                    a.y -= ny * overlap;
+                    b.x += nx * overlap;
+                    b.y += ny * overlap;
+                }
+            }
+        }
+        // Sanft aus dem Spieler herausdrücken, damit sie nicht in dessen Zentrum sitzen
+        enemies.forEach(e => {
+            const dx = e.x - player.x, dy = e.y - player.y;
+            let dist = Math.hypot(dx, dy) || 0.01;
+            const minDist = e.radius + player.radius;
+            if (dist < minDist) {
+                const overlap = minDist - dist;
+                e.x += (dx / dist) * overlap;
+                e.y += (dy / dist) * overlap;
+            }
+        });
+    }
+}
+
 function shoot() {
     const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
     const bx = player.x + Math.cos(angle)*25;
@@ -207,10 +220,9 @@ function update() {
     player.update();
     player.draw();
 
-    enemies.forEach(e => {
-        e.update();
-        e.draw();
-    });
+    enemies.forEach(e => e.update());
+    resolveEnemyCollisions();
+    enemies.forEach(e => e.draw());
 
     bullets.forEach(b => {
         b.update();
