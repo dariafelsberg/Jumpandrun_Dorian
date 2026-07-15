@@ -41,7 +41,7 @@ $users  = $pdo->query('
 
 <div class="db-wrap">
     <div class="toolbar">
-        <a class="btn" href="export.php">Datenbank-Datei herunterladen</a>
+        <a class="btn" href="export.php">Datenbank als PDF herunterladen</a>
         <a class="btn" style="background:linear-gradient(135deg,#ff5050,#b00020);" href="reset.php?key=galaxy-admin-2026">Zurücksetzen</a>
     </div>
 
