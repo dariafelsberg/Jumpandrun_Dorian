@@ -37,14 +37,14 @@ class Player {
         ctx.rotate(angle);
 
         const grad = ctx.createRadialGradient(0,0,5,0,0,40);
-        grad.addColorStop(0, "rgba(0,200,255,0.9)");
+        grad.addColorStop(0, "rgba(140,191,53,0.9)");
         grad.addColorStop(1, "rgba(0,0,0,0)");
         ctx.fillStyle = grad;
         ctx.beginPath();
         ctx.arc(0,0,40,0,Math.PI*2);
         ctx.fill();
 
-        ctx.fillStyle = "#00eaff";
+        ctx.fillStyle = "#8CBF35";
         ctx.beginPath();
         ctx.moveTo(25,0);
         ctx.lineTo(-20,-15);
@@ -109,7 +109,7 @@ class Bullet {
     draw() {
         ctx.save();
         ctx.translate(this.x, this.y);
-        ctx.fillStyle = "#00ffea";
+        ctx.fillStyle = "#B6E14A";
         ctx.beginPath();
         ctx.arc(0,0,this.radius,0,Math.PI*2);
         ctx.fill();
@@ -208,7 +208,7 @@ function shoot() {
     const by = player.y + Math.sin(angle)*25;
     bullets.push(new Bullet(bx,by,angle));
     for (let i=0;i<6;i++) {
-        particles.push(new Particle(bx,by,"#00ffea"));
+        particles.push(new Particle(bx,by,"#B6E14A"));
     }
 }
 
@@ -310,7 +310,7 @@ function gameOver() {
     overlay.innerHTML = `
         <h1>Game Over</h1>
         <p>Score: ${score} · Welle: ${wave}</p>
-        <p id="save-status" style="font-size:13px;color:#9fd8ff;">Speichere Highscore...</p>
+        <p id="save-status" style="font-size:13px;color:#C9E28F;">Speichere Highscore...</p>
         <a class="btn secondary" href="highscore.php">Highscore ansehen</a>
     `;
 

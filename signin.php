@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="auth-card">
     <h1>Anmelden</h1>
-    <p style="text-align:center;color:#9fd8ff;font-size:13px;margin-top:-8px;">
+    <p style="text-align:center;color:#C9E28F;font-size:13px;margin-top:-8px;">
         Neu hier? Einfach ausfüllen – dein Konto wird automatisch erstellt.
     </p>
 

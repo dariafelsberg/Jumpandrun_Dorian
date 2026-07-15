@@ -48,7 +48,7 @@ $alreadyPlayed = (int)$stmt->fetchColumn() > 0;
         <div id="center-overlay">
             <h1>Galaxy Runner</h1>
             <p>Steuere dein Schiff mit WASD, ziele mit der Maus und schieße mit Linksklick.</p>
-            <p style="font-size:12px;color:#9fd8ff;">Achtung: Du hast nur einen Versuch!</p>
+            <p style="font-size:12px;color:#C9E28F;">Achtung: Du hast nur einen Versuch!</p>
             <button class="btn" id="start-btn">Start</button>
         </div>
     <?php endif; ?>

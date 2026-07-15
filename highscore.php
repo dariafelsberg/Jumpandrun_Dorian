@@ -35,7 +35,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <h1>🏆 Highscore</h1>
 
     <?php if (empty($rows)): ?>
-        <p style="text-align:center;color:#9fd8ff;">Noch keine Einträge vorhanden. Spiel eine Runde!</p>
+        <p style="text-align:center;color:#C9E28F;">Noch keine Einträge vorhanden. Spiel eine Runde!</p>
     <?php else: ?>
         <div class="table-scroll">
         <table class="scores">
