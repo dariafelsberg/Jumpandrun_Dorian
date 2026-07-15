@@ -44,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
         </p>
         <form method="post" style="text-align:center;">
             <input type="hidden" name="key" value="<?= htmlspecialchars($key) ?>">
-            <button type="submit" name="confirm" value="1" class="btn" style="background:#ff8080;color:#1a0000;box-shadow:0 0 8px rgba(140,191,53,0.56);">Ja, alles löschen</button>
-            <a class="btn" style="background:transparent;color:#fff;border:1px solid #fff;box-shadow:0 0 8px rgba(140,191,53,0.56);" href="view-db.php">Abbrechen</a>
+            <button type="submit" name="confirm" value="1" class="btn" style="background:#ff8080;color:#1a0000;box-shadow:0 0 10px rgba(140,191,53,0.56);">Ja, alles löschen</button>
+            <a class="btn" style="background:transparent;color:#fff;border:1px solid #fff;box-shadow:0 0 10px rgba(140,191,53,0.56);" href="view-db.php">Abbrechen</a>
         </form>
     <?php endif; ?>
 </div>
