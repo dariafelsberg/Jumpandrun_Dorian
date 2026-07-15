@@ -39,7 +39,7 @@ $scores = $pdo->query('
     table.db { width: 100%; border-collapse: collapse; font-size: 13px; }
     table.db th, table.db td { padding: 6px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left; white-space: nowrap; }
     table.db th { color: #00eaff; }
-    table.db th.col-rank, table.db td.col-rank { background: rgba(255,255,255,0.06); }
+    table.db th.col-rank, table.db td.col-rank { background: rgba(255,255,255,0.12); }
     .toolbar { text-align: right; margin-bottom: 12px; }
 </style>
 </head>

@@ -65,11 +65,37 @@ class Enemy {
         this.hp = 2 + wave;
     }
     update() {
+        // Verfolgung des Spielers
         const dx = player.x - this.x;
         const dy = player.y - this.y;
         const dist = Math.hypot(dx, dy) || 1;
-        this.x += dx/dist * this.speed;
-        this.y += dy/dist * this.speed;
+        let moveX = dx/dist;
+        let moveY = dy/dist;
+
+        // Abstoßung von anderen Gegnern, damit sie sich nicht auf einem Punkt stapeln
+        let sepX = 0, sepY = 0;
+        const minDist = this.radius * 2.2;
+        enemies.forEach(other => {
+            if (other === this) return;
+            const ox = this.x - other.x;
+            const oy = this.y - other.y;
+            const oDist = Math.hypot(ox, oy) || 0.01;
+            if (oDist < minDist) {
+                const push = (minDist - oDist) / minDist;
+                sepX += (ox/oDist) * push;
+                sepY += (oy/oDist) * push;
+            }
+        });
+
+        // Verfolgung + Abstoßung kombinieren (Abstoßung stärker gewichten)
+        let combinedX = moveX + sepX * 1.8;
+        let combinedY = moveY + sepY * 1.8;
+        const combinedLen = Math.hypot(combinedX, combinedY) || 1;
+        combinedX /= combinedLen;
+        combinedY /= combinedLen;
+
+        this.x += combinedX * this.speed;
+        this.y += combinedY * this.speed;
     }
     draw() {
         ctx.save();
