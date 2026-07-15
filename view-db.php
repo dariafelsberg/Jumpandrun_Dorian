@@ -11,12 +11,6 @@ $users  = $pdo->query('
     GROUP BY u.id
     ORDER BY (best_score IS NULL) ASC, best_score DESC
 ')->fetchAll(PDO::FETCH_ASSOC);
-$scores = $pdo->query('
-    SELECT s.id, s.user_id, u.vorname, u.nachname, s.score, s.wave, s.created_at
-    FROM scores s
-    JOIN users u ON u.id = s.user_id
-    ORDER BY s.score DESC
-')->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -39,7 +33,7 @@ $scores = $pdo->query('
     table.db { width: 100%; border-collapse: collapse; font-size: 13px; }
     table.db th, table.db td { padding: 6px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left; white-space: nowrap; }
     table.db th { color: #00eaff; }
-    table.db th.col-rank, table.db td.col-rank { background: rgba(255,255,255,0.12); }
+    table.db th.col-rank, table.db td.col-rank { background: rgba(255,255,255,0.06); }
     .toolbar { text-align: right; margin-bottom: 12px; }
 </style>
 </head>
@@ -73,25 +67,6 @@ $scores = $pdo->query('
         </table>
     </div>
 
-    <div class="db-card">
-        <h2>Scores (<?= count($scores) ?>)</h2>
-        <table class="db">
-            <thead>
-                <tr><th>ID</th><th>Spieler</th><th>Score</th><th>Welle</th><th>Erstellt am</th></tr>
-            </thead>
-            <tbody>
-                <?php foreach ($scores as $s): ?>
-                <tr>
-                    <td><?= (int)$s['id'] ?></td>
-                    <td><?= htmlspecialchars($s['vorname'] . ' ' . $s['nachname']) ?></td>
-                    <td><?= (int)$s['score'] ?></td>
-                    <td><?= (int)$s['wave'] ?></td>
-                    <td><?= htmlspecialchars($s['created_at']) ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
 </div>
 
 </body>
