@@ -7,6 +7,59 @@ canvas.height = container.clientHeight;
 let keys = {};
 let mouse = { x: canvas.width/2, y: canvas.height/2, down: false };
 
+// --- Gamepad-Unterstützung ---
+let gamepadIndex = null;
+let gamepadAimActive = false;
+let gamepadAimAngle = 0;
+let gamepadShootHeld = false;
+let gamepadPauseWasPressed = false;
+
+window.addEventListener("gamepadconnected", (e) => {
+    gamepadIndex = e.gamepad.index;
+});
+window.addEventListener("gamepaddisconnected", (e) => {
+    if (gamepadIndex === e.gamepad.index) gamepadIndex = null;
+});
+
+function pollGamepad() {
+    if (gamepadIndex === null) return;
+    const gp = navigator.getGamepads()[gamepadIndex];
+    if (!gp) return;
+
+    const deadzone = 0.2;
+
+    // Linker Stick -> Bewegung (in "keys" einspeisen, damit Player.update() es direkt nutzt)
+    const lx = gp.axes[0] || 0, ly = gp.axes[1] || 0;
+    keys["gp_left"]  = lx < -deadzone;
+    keys["gp_right"] = lx > deadzone;
+    keys["gp_up"]    = ly < -deadzone;
+    keys["gp_down"]  = ly > deadzone;
+
+    // Rechter Stick -> Zielrichtung
+    const rx = gp.axes[2] || 0, ry = gp.axes[3] || 0;
+    if (Math.hypot(rx, ry) > deadzone) {
+        gamepadAimActive = true;
+        gamepadAimAngle = Math.atan2(ry, rx);
+    } else {
+        gamepadAimActive = false;
+    }
+
+    // Rechter Trigger (RT/R2, Index 7) oder A/X-Knopf (Index 0) -> Schiessen
+    gamepadShootHeld = !!(gp.buttons[7] && gp.buttons[7].pressed) ||
+                        !!(gp.buttons[0] && gp.buttons[0].pressed);
+
+    // Start-Knopf (Index 9) -> Pause (nur bei neuem Tastendruck umschalten)
+    const pausePressed = !!(gp.buttons[9] && gp.buttons[9].pressed);
+    if (pausePressed && !gamepadPauseWasPressed) paused = !paused;
+    gamepadPauseWasPressed = pausePressed;
+}
+
+// Liefert den aktuellen Zielwinkel: rechter Stick hat Vorrang vor der Maus
+function getAimAngle(x, y) {
+    if (gamepadAimActive) return gamepadAimAngle;
+    return Math.atan2(mouse.y - y, mouse.x - x);
+}
+
 let player, enemies, bullets, particles, powerups;
 let score, hp, wave, running, paused;
 let rafId = null;
@@ -20,10 +73,10 @@ class Player {
     }
     update() {
         let dx = 0, dy = 0;
-        if (keys["w"]) dy -= 1;
-        if (keys["s"]) dy += 1;
-        if (keys["a"]) dx -= 1;
-        if (keys["d"]) dx += 1;
+        if (keys["w"] || keys["gp_up"]) dy -= 1;
+        if (keys["s"] || keys["gp_down"]) dy += 1;
+        if (keys["a"] || keys["gp_left"]) dx -= 1;
+        if (keys["d"] || keys["gp_right"]) dx += 1;
         const len = Math.hypot(dx, dy) || 1;
         this.x += dx/len * this.speed;
         this.y += dy/len * this.speed;
@@ -33,7 +86,7 @@ class Player {
     draw() {
         ctx.save();
         ctx.translate(this.x, this.y);
-        const angle = Math.atan2(mouse.y - this.y, mouse.x - this.x);
+        const angle = getAimAngle(this.x, this.y);
         ctx.rotate(angle);
 
         const grad = ctx.createRadialGradient(0,0,5,0,0,40);
@@ -203,7 +256,7 @@ function resolveEnemyCollisions() {
 }
 
 function shoot() {
-    const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
+    const angle = getAimAngle(player.x, player.y);
     const bx = player.x + Math.cos(angle)*25;
     const by = player.y + Math.sin(angle)*25;
     bullets.push(new Bullet(bx,by,angle));
@@ -216,6 +269,8 @@ function update() {
     if (!running || paused) return;
 
     ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    pollGamepad();
 
     player.update();
     player.draw();
@@ -340,5 +395,5 @@ canvas.addEventListener("mousedown", () => { mouse.down = true; shoot(); });
 canvas.addEventListener("mouseup", () => mouse.down = false);
 
 setInterval(() => {
-    if (mouse.down && running && !paused) shoot();
+    if ((mouse.down || gamepadShootHeld) && running && !paused) shoot();
 }, 120);
