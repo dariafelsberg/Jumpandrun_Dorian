@@ -19,7 +19,7 @@ a { color: #8CBF35; }
 #game-container {
     width: 900px;
     height: 600px;
-    background: radial-gradient(circle at center, #142400, #03040a);
+    background: radial-gradient(circle at center, #0a0f2b, #03040a);
     border-radius: 12px;
     box-shadow: 0 0 40px rgba(0,0,0,0.8);
     position: relative;
@@ -116,7 +116,7 @@ canvas {
 
 .auth-card {
     width: 380px;
-    background: radial-gradient(circle at center, #142400, #03040a);
+    background: radial-gradient(circle at center, #0a0f2b, #03040a);
     border-radius: 12px;
     box-shadow: 0 0 40px rgba(0,0,0,0.8);
     padding: 32px 30px;
@@ -197,7 +197,7 @@ canvas {
     box-sizing: border-box;
     margin: 0 auto 16px;
     padding: 14px 24px;
-    background: radial-gradient(circle at center, #142400, #03040a);
+    background: radial-gradient(circle at center, #0a0f2b, #03040a);
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0,0,0,0.6);
     font-size: 14px;
@@ -206,7 +206,7 @@ canvas {
 
 #highscore-card {
     width: 700px;
-    background: radial-gradient(circle at center, #142400, #03040a);
+    background: radial-gradient(circle at center, #0a0f2b, #03040a);
     border-radius: 12px;
     box-shadow: 0 0 40px rgba(0,0,0,0.8);
     padding: 30px;
@@ -229,7 +229,7 @@ table.scores {
     max-height: 420px;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #8CBF35 #142400;
+    scrollbar-color: #8CBF35 #0a0f2b;
 }
 
 .table-scroll::-webkit-scrollbar {
@@ -237,7 +237,7 @@ table.scores {
 }
 
 .table-scroll::-webkit-scrollbar-track {
-    background: #142400;
+    background: #0a0f2b;
     border-radius: 10px;
 }
 
@@ -253,7 +253,7 @@ table.scores {
 .table-scroll thead th {
     position: sticky;
     top: 0;
-    background: #142400;
+    background: #0a0f2b;
     z-index: 1;
 }
 
