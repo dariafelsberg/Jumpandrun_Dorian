@@ -39,6 +39,7 @@ $scores = $pdo->query('
     table.db { width: 100%; border-collapse: collapse; font-size: 13px; }
     table.db th, table.db td { padding: 6px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left; white-space: nowrap; }
     table.db th { color: #00eaff; }
+    table.db th.col-rank { color: rgba(0,234,255,0.5); }
     .toolbar { text-align: right; margin-bottom: 12px; }
 </style>
 </head>
@@ -54,7 +55,7 @@ $scores = $pdo->query('
         <h2>Users (<?= count($users) ?>)</h2>
         <table class="db">
             <thead>
-                <tr><th>#</th><th>ID</th><th>Email</th><th>Vorname</th><th>Nachname</th><th>Bester Score</th><th>Erstellt am</th></tr>
+                <tr><th class="col-rank">#</th><th>ID</th><th>Email</th><th>Vorname</th><th>Nachname</th><th>Bester Score</th><th>Erstellt am</th></tr>
             </thead>
             <tbody>
                 <?php foreach ($users as $i => $u): ?>
