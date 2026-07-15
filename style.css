@@ -116,7 +116,7 @@ canvas {
 
 .auth-card {
     width: 380px;
-    background: radial-gradient(circle at center, #0a0f2b, #03040a);
+    background: radial-gradient(circle at center, #131f0a, #03040a);
     border-radius: 12px;
     box-shadow: 0 0 40px rgba(0,0,0,0.8);
     padding: 32px 30px;
