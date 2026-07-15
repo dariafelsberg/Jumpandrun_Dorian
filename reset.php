@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
     <?php if ($done): ?>
         <p style="text-align:center;">Alle Konten und Highscores wurden gelöscht.</p>
         <div style="text-align:center;margin-top:16px;">
-            <a class="btn" href="signin.php">Zur Anmeldung</a>
+            <a class="btn" href="view-db.php">Zurück zu view-db</a>
         </div>
     <?php else: ?>
         <p style="text-align:center;color:#ff8080;">
@@ -45,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
         <form method="post" style="text-align:center;">
             <input type="hidden" name="key" value="<?= htmlspecialchars($key) ?>">
             <button type="submit" name="confirm" value="1" class="btn">Ja, alles löschen</button>
+            <a class="btn" style="background:linear-gradient(135deg,#555,#333);" href="view-db.php">Abbrechen</a>
         </form>
     <?php endif; ?>
 </div>
