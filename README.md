@@ -63,7 +63,6 @@ bei Bedarf automatisch neu an.
 ## Admin-Funktionen
 
 - **`view-db.php`** – zeigt alle registrierten Nutzer mit bestem Score.
-  https://galaxy-runner.sbw.media/view-db.php
   Von dort aus verlinkt: Datenbank als PDF herunterladen (`export.php`)
   und Datenbank zurücksetzen (`reset.php`).
 - **`reset.php`** – löscht alle Nutzer & Scores unwiderruflich. Geschützt
